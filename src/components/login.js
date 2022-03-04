@@ -11,14 +11,11 @@ const Login = () => {
 
   const login = () => {
     const provider = new GoogleAuthProvider();
-    let { user } = "";
+    let { user } = {};
     signInWithPopup(auth, provider)
       .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
         // The signed-in user info.
         user = result.user;
-        console.log(user);
       })
       .catch((error) => {
         // Handle Errors here.
