@@ -5,7 +5,9 @@ import { Context } from "../index";
 import { TextField } from "@mui/material";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import Loader from "./Loader";
+
 import firebase from "firebase/compat/app";
+import { collection, getDocs } from "firebase/firestore";
 
 const Chat = () => {
   const { auth, firestore } = useContext(Context);
@@ -16,15 +18,36 @@ const Chat = () => {
   );
 
   const sendMessage = async () => {
-    firestore.collection("messages").add({
+    if (value !== "") {
+      firebaseSendMessage();
+      setValue("");
+    } else {
+      return null;
+    }
+  };
+
+  const firebaseSendMessage = () => {
+    return firestore.collection("messages").add({
       uid: user.uid,
       displayName: user.displayName,
       photoURL: user.photoURL,
       text: value,
       createAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
-    setValue("");
   };
+
+  const firebaseGetData = async () => {
+    console.log("start");
+    const querySnapshot = await getDocs(collection(firestore, "messages"));
+    console.log(querySnapshot);
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.data().text);
+    });
+    console.log("stop");
+  };
+
+  firebaseGetData();
 
   if (loading) {
     return <Loader />;
@@ -45,8 +68,9 @@ const Chat = () => {
             overflowY: "auto",
           }}
         >
-          {messages.map((message) => (
+          {messages.map((message, index) => (
             <div
+              key={index}
               style={{
                 margin: 10,
                 border:
@@ -73,7 +97,6 @@ const Chat = () => {
         >
           <TextField
             fullWidth
-            rowMax={2}
             variant={"outlined"}
             value={value}
             onChange={(e) => setValue(e.target.value)}

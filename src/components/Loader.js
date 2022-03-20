@@ -7,7 +7,7 @@ const Loader = () => {
       <Grid
         container
         style={{ height: window.innerHeight - 50 }}
-        alugnItems={"center"}
+        alignItems={"center"}
         justify={"center"}
       >
         <Grid container alignItems={"center"} direction={"column"}>
