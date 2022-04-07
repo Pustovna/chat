@@ -1,0 +1,14 @@
+.container {
+    height: calc(100vh - 50px);
+    align-items: center;
+    justify-content: center;
+}
+
+.auth__wrap {
+    width: 400px;
+    background-color: lightgray;
+    border-radius: 20px;
+    align-items: center;
+    flex-direction: column;
+}
+

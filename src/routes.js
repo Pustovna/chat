@@ -1,6 +1,6 @@
 import { LOGIN_ROUTE, CHAT_ROUTE } from "./utils/consts";
-import Login from "./components/login";
-import Chat from "./components/Chat";
+import Login from "./components/Login/Login";
+import Chat from "./components/Chat/Chat";
 import { Navigate } from "react-router-dom";
 
 export const publicRoutes = [

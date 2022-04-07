@@ -1,8 +1,9 @@
 import React from "react";
 import { useContext } from "react";
-import { Context } from "../index";
+import { Context } from "../../index";
 import { Button, Container, Grid } from "@mui/material";
 import Box from "@mui/material/Box";
+import styles from "./login.module.css"
 
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
@@ -34,15 +35,11 @@ const Login = () => {
     <Container>
       <Grid
         container
-        style={{ height: window.innerHeight - 50 }}
-        alignItems={"center"}
-        justifyContent="center"
+        className={styles.container}
       >
         <Grid
-          style={{ width: 400, background: "lightgray", borderRadius: "20px" }}
           container
-          alignItems={"center"}
-          direction={"column"}
+          className={styles.auth__wrap}
         >
           <Box p={5}>
             <Button onClick={login} variant={"outlined"}>

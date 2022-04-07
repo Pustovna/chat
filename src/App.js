@@ -3,7 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import "./App.css";
 import AppRouter from "./components/AppRouter";
-import Loader from "./components/Loader";
+import Loader from "./components/Loader/Loader";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Context } from "./index";
 

@@ -1,0 +1,38 @@
+.container {
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.messages__wrap {
+    width: 80%;
+    height: 60vh;
+    overflow-y: auto;
+    border: 1px solid gray;
+}
+
+.item__self {
+    margin: 10px;
+    width: fit-content;
+    padding: 5px;
+    border: 1px solid green;
+    margin-left: auto;
+}
+
+.item__other {
+    margin: 10px;
+    width: fit-content;
+    padding: 5px;
+    border: 1px dashed red;
+    margin-left: 10px;
+}
+
+.delete {
+    font-size: 10px;
+}
+
+.input__wrap {
+    max-width: 80%;
+    align-items: flex-end;
+    margin-top: 20px;
+}
+
