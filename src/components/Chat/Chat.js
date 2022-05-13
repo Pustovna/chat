@@ -7,19 +7,20 @@ import { TextField } from "@mui/material";
 import styles from "./chat.module.css";
 
 // import { useCollectionData } from "react-firebase-hooks/firestore";
-// import Loader from "../Loader";
+import Loader from "../Loader/Loader";
 
-import firebase from "firebase/compat/app";
+// import firebase from "firebase/compat/app";
 import {
   collection,
   getDocs,
   doc,
+  addDoc,
   deleteDoc,
-  collectionGroup,
   onSnapshot,
-  connectFirestoreEmulator,
+  serverTimestamp,
+  orderBy,
+  query
 } from "firebase/firestore";
-// import { style } from "@mui/system";
 
 const Chat = () => {
   const { auth, firestore } = useContext(Context);
@@ -28,20 +29,24 @@ const Chat = () => {
   // const [messages, loading] = useCollectionData(
   //   firestore.collection("messages").orderBy("createAt")
   // );
-  const [messages, setMesssages] = useState([]);
+  const [messages, setMesssages] = useState();
 
   useEffect(
-    () =>
-      onSnapshot(collection(firestore, "messages"), (snapshot) =>
-        setMesssages(
-          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        )
-      ),
-    []
+    () => {
+      const collectionRef = collection(firestore, "messages");
+      const q = query(collectionRef, orderBy("timestamp", "asc"));
+      
+
+      const unsub = onSnapshot(q, (snapshot) => 
+      setMesssages(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      ))
+
+      return unsub;
+    },[]
   );
 
-  const sendMessage = async () => {
-    console.log("sendMessage");
+  const sendMessage = () => {
     if (value !== "") {
       firebaseSendMessage();
       setValue("");
@@ -50,14 +55,24 @@ const Chat = () => {
     }
   };
 
-  const firebaseSendMessage = () => {
-    return firestore.collection("messages").add({
+  const firebaseSendMessage = async () => {
+    // return firestore.collection("messages").add({
+    //   uid: user.uid,
+    //   displayName: user.displayName,
+    //   photoURL: user.photoURL,
+    //   text: value,
+    //   createAt: firebase.firestore.FieldValue.serverTimestamp(),
+    // });
+    const collectionRef = collection(firestore, "messages");
+    const payload = {
       uid: user.uid,
       displayName: user.displayName,
       photoURL: user.photoURL,
       text: value,
-      createAt: firebase.firestore.FieldValue.serverTimestamp(),
-    });
+      timestamp: serverTimestamp()
+    };
+
+    return await addDoc(collectionRef, payload);
   };
 
   const deleteMessage = async (e, id) => {
@@ -88,17 +103,17 @@ const Chat = () => {
     }
   };
 
-  // if (loading) {
-  //   return <Loader />;
-  // }
+  if (!messages) {
+    return <Loader />;
+  }
 
   return (
     <Container>
       <Grid container className={styles.container}>
         <div className={styles.messages__wrap}>
-          {messages.map((message) => (
+          {messages.map((message, index) => (
             <div
-              key={message.id}
+              key={index}
               className={checkSender(user.uid, message.uid)}
             >
               <Grid container>

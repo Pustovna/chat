@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Container, Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import styles from "./loader.module.css";
 
 

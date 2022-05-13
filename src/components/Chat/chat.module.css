@@ -7,22 +7,25 @@
     width: 80%;
     height: 60vh;
     overflow-y: auto;
-    border: 1px solid gray;
+    border-left: 0.6px solid #B5CADD;
+    border-right: 0.6px solid #B5CADD;
 }
 
 .item__self {
     margin: 10px;
     width: fit-content;
     padding: 5px;
-    border: 1px solid green;
+    border: 1px solid #B5CADD;
     margin-left: auto;
+    border-radius: 8px;
+    background-color: #D8F1FC;
 }
 
 .item__other {
     margin: 10px;
     width: fit-content;
     padding: 5px;
-    border: 1px dashed red;
+    border: 1px dashed #B5CADD;
     margin-left: 10px;
 }
 
@@ -33,6 +36,5 @@
 .input__wrap {
     max-width: 80%;
     align-items: flex-end;
-    margin-top: 20px;
+ 
 }
-

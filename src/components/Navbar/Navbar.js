@@ -3,8 +3,8 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { Button, Grid } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import { LOGIN_ROUTE } from "../utils/consts";
-import { Context } from "../index";
+import { LOGIN_ROUTE } from "../../utils/consts";
+import { Context } from "../../index";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signOut } from "firebase/auth";
 
