@@ -17,7 +17,7 @@ const Navbar = () => {
       <Toolbar variant={"dense"}>
         <Grid container justifyContent="flex-end">
           {user ? (
-            <Button onClick={() => signOut(auth)} variant={"outlined"}>
+            <Button to={LOGIN_ROUTE} onClick={() => signOut(auth)} variant={"outlined"}>
               Выйти
             </Button>
           ) : (

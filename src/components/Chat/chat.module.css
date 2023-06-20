@@ -1,15 +1,27 @@
 .container {
-    margin-top: 20px;
+    /*margin-top: 20px;*/
     justify-content: center;
+    padding-top: 2px;
 }
 
 .messages__wrap {
     width: 80%;
     height: 60vh;
-    overflow-y: auto;
     border-left: 0.6px solid #B5CADD;
     border-right: 0.6px solid #B5CADD;
+    display: flex;
+    flex-direction: column-reverse;
+    overflow-y: auto;
 }
+
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+
 
 .item__self {
     margin: 10px;
@@ -19,6 +31,7 @@
     margin-left: auto;
     border-radius: 8px;
     background-color: #D8F1FC;
+    max-width: 60vw;
 }
 
 .item__other {
@@ -26,15 +39,41 @@
     width: fit-content;
     padding: 5px;
     border: 1px dashed #B5CADD;
-    margin-left: 10px;
+    border-radius: 8px;
+    max-width: 80vw;
 }
 
-.delete {
-    font-size: 10px;
-}
 
 .input__wrap {
     max-width: 80%;
     align-items: flex-end;
  
+}
+
+.text {
+    padding: 10px;
+    word-break: break-all;
+    max-width: 35vw;
+}
+
+.delete {
+    color: #bd0a0ab5;
+}
+
+
+/* Scrollbar */
+.messages__wrap::-webkit-scrollbar {
+    width: 2px;
+}
+
+.messages__wrap::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.messages__wrap::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.messages__wrap::-webkit-scrollbar-thumb:hover {
+    background: #034088;
 }

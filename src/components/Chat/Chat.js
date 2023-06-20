@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Avatar, Button, Container, Grid, IconButton } from "@mui/material";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Context } from "../../index";
 
 import { TextField } from "@mui/material";
@@ -29,26 +30,31 @@ const Chat = () => {
   // const [messages, loading] = useCollectionData(
   //   firestore.collection("messages").orderBy("createAt")
   // );
+
+
   const [messages, setMesssages] = useState();
+
 
   useEffect(
     () => {
+
       const collectionRef = collection(firestore, "messages");
       const q = query(collectionRef, orderBy("timestamp", "asc"));
-      
 
-      const unsub = onSnapshot(q, (snapshot) => 
+      const unsub = onSnapshot(q, (snapshot) =>
       setMesssages(
         snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-      ))
+      ));
 
       return unsub;
     },[]
   );
 
   const sendMessage = () => {
-    if (value !== "") {
-      firebaseSendMessage();
+    if (value !== "" && value !== " ") {
+      firebaseSendMessage().then((answ  ) => {
+        console.log("send");
+      });
       setValue("");
     } else {
       return null;
@@ -75,6 +81,18 @@ const Chat = () => {
     return await addDoc(collectionRef, payload);
   };
 
+  // I need convert seconds to date and time
+    const convertDate = (seconds) => {
+    const date = new Date(seconds * 1000);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = "0" + date.getMinutes();
+    const secondsNew = "0" + date.getSeconds();
+    const formattedTime = `${day}.${month}.${year} ${hours}:${minutes.slice(1)}:${secondsNew.slice(1)}`;
+    return formattedTime;
+    }
   const deleteMessage = async (e, id) => {
     if (id) {
       deleteDoc(doc(firestore, "messages", id));
@@ -103,6 +121,7 @@ const Chat = () => {
     }
   };
 
+
   if (!messages) {
     return <Loader />;
   }
@@ -110,26 +129,32 @@ const Chat = () => {
   return (
     <Container>
       <Grid container className={styles.container}>
-        <div className={styles.messages__wrap}>
+        <div className={styles.messages__wrap} >
+        <div className="chat">
           {messages.map((message, index) => (
             <div
               key={index}
               className={checkSender(user.uid, message.uid)}
+
             >
-              <Grid container>
+              <Grid container zeroMinWidth direction="row" alignItems="center">
                 <Avatar src={message.photoURL}></Avatar>
-                <div>{message.text}</div>
-                <IconButton
-                  onClick={(e) => {
-                    deleteMessage(e, message.id);
-                  }}
+                <p className={styles.text} onClick={(e) => console.log(convertDate((message.timestamp.seconds)))}>{message.text}</p>
+                <IconButton aria-label="delete"  size="small"
+                            onClick={(e) => {
+                              deleteMessage(e, message.id).then(r => {});
+                            }}
                 >
-                  <div className={styles.delete}>delete</div>
+                  <HighlightOffIcon  className={styles.delete} />
                 </IconButton>
               </Grid>
+
+
             </div>
           ))}
         </div>
+        </div>
+
         <Grid container className={styles.input__wrap}>
           <TextField
             fullWidth
@@ -139,6 +164,13 @@ const Chat = () => {
             multiline
             rows={2}
             onChange={(e) => setValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                e.stopPropagation();
+                sendMessage();
+              }
+            }}
           ></TextField>
           <Button onClick={sendMessage} variant={"outlined"}>
             Отправить
@@ -148,5 +180,6 @@ const Chat = () => {
     </Container>
   );
 };
+
 
 export default Chat;
